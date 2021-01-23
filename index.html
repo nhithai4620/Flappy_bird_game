@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flappy monney</title>
+</head>
+<body style="height:100vh; background: black; text-align:center;">
+    <canvas style="border: 2px solid skyblue;" id="c" width="400" height ="400"></canvas>
+    <script>
+        context = c.getContext("2d");
+        const bird = new Image();
+        bird.src = "bird2.png"
+        birdX = birDY = score = bestScore = 0;
+        interval = birdSize = pipeWidth = topPipeBottomY= 24;
+        birdY = pipeGap = 200;
+        canvasSize= pipeX = 400;
+        c.onclick = () => {birdDY = 9};
+        setInterval(() =>{
+            context.fillStyle = "skyblue";
+            context.fillRect(0,0,canvasSize,canvasSize); //draw sky
+            birdY -= birdDY -= 0.5; //Gravity
+            context.drawImage(bird,birdX,birdY,birdSize * (524/374),birdSize);//drawbird
+            context.fillStyle = "green";
+            pipeX -= 8;
+            pipeX < -pipeWidth && 
+                ((pipeX = canvasSize),(topPipeBottomY = pipeGap * Math.random()));
+            context.fillRect(pipeX,0, pipeWidth, topPipeBottomY); //draw top pipe
+            context.fillRect(pipeX,topPipeBottomY + pipeGap, pipeWidth, canvasSize); //draw bottom pipe
+            context.fillStyle = "black";
+            context.fillText(score++,9,25);
+            bestScore = bestScore <score ? score : bestScore;
+            context.fillText(`Best Score: ${bestScore}`,9,50);
+            context.fillText("BY Nhi Thai",9,65) ;
+            (((birdY < topPipeBottomY || birdY > topPipeBottomY + pipeGap) && pipeX < birdSize * (524/374))
+            || birdY > canvasSize) && //bird fall off screen  
+            ((birdDY = 0),(birdY == 200),(pipeX = canvasSize),(score = 0)); //bird died
+        },interval)
+    </script>
+</body>
+</html>
